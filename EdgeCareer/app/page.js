@@ -272,8 +272,8 @@ export default function LandingPage() {
             </motion.h2>
             <SplitText  /> */}
             <SplitText
-              text="AI Features to Accelerate Your Career"
-              className="text-5xl font-semibold text-center tracking-tighter ml-[15%] mr-auto mb-12"
+              text="Everything You Need To Get The Offer"
+              className="text-4xl md:text-5xl font-semibold text-center tracking-tighter mx-auto mb-12"
               delay={100}
               duration={0.2}
               ease="power3.out"
@@ -519,12 +519,12 @@ export default function LandingPage() {
             <AnimatedCounter
               value="50+"
               classname="animate-bounce"
-              text="Industries Covered"
+              text="Resumes Optimized"
             />
             <AnimatedCounter
               value="1000+"
               classname="animate-bounce delay-500"
-              text="Interview Questions"
+              text="Interviews Practiced"
             />
             <AnimatedCounter
               value="95%"
@@ -534,7 +534,7 @@ export default function LandingPage() {
             <AnimatedCounter
               value="24/7"
               classname="animate-bounce delay-500"
-              text="AI Support"
+              text="Hired Users"
             />
           </div>
         </div>
@@ -543,7 +543,7 @@ export default function LandingPage() {
       <section
         id="how-it-works"
         className="w-full py-12 md:py-24 bg-background relative overflow-x-hidden" // Added overflow-x-hidden
-        aria-label="How EdgeCareer Works"
+        aria-label="How PathIntel Works"
         ref={howItWorksRef}
       >
         {/* Background decorative elements - adjust positioning to prevent overflow */}
@@ -576,8 +576,8 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 md:px-6 relative pt-10 pb-10">
           <div className="text-center max-w-3xl mx-auto mb-6">
             <SplitText
-              text="How it Works"
-              className="text-5xl font-semibold text-center tracking-tighter mx-auto mr-auto mb-1"
+              text="From Application to Offer Letter"
+              className="text-4xl md:text-5xl font-semibold text-center tracking-tighter mx-auto mb-2"
               delay={100}
               duration={0.2}
               ease="power3.out"
@@ -590,7 +590,7 @@ export default function LandingPage() {
               onLetterAnimationComplete={() => { }}
             />
             <ShinyText
-              text="Four simple steps to accelerate your career growth with AI-powered guidance"
+              text="A simple, proven workflow to land your next role"
               speed={3}
               className="text-muted-foreground"
             />

@@ -19,16 +19,16 @@ const ThemeSwitch = () => {
   return theme === "dark" ? (
     <button
       onClick={() => setTheme("light")}
-      className="flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-zinc-950 shadow-md hover:shadow-lg transition-shadow duration-300"
+      className="flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-zinc-950 shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-800"
     >
-      <SunIcon />
+      <SunIcon className="w-6 h-6" />
     </button>
   ) : (
     <button
       onClick={() => setTheme("dark")}
-      className="flex items-center justify-center w-10 h-10 rounded-full bg-white dark:bg-zinc-950 shadow-md hover:shadow-lg transition-shadow duration-300"
+      className="flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-zinc-950 shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-800"
     >
-      <MoonIcon />
+      <MoonIcon className="w-6 h-6" />
     </button>
   );
 };

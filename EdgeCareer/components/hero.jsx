@@ -95,33 +95,33 @@ const HeroSection = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [quote, setQuote] = useState(null);
-const [quoteError, setQuoteError] = useState(null);
+  const [quoteError, setQuoteError] = useState(null);
 
-useEffect(() => {
-  async function fetchQuote() {
-    try {
-      const res = await fetch("https://zenquotes.io/api/today", { cache: "no-store" });
-      const data = await res.json();
-     setQuote(data[0]);
-    } catch (error) {
-      setQuoteError("Could not load today's quote.");
+  useEffect(() => {
+    async function fetchQuote() {
+      try {
+        const res = await fetch("https://zenquotes.io/api/today", { cache: "no-store" });
+        const data = await res.json();
+        setQuote(data[0]);
+      } catch (error) {
+        setQuoteError("Could not load today's quote.");
+      }
     }
-  }
 
-  fetchQuote();
-}, []);useEffect(() => {
-  async function fetchQuote() {
-    try {
-      const res = await fetch("/api/quote");
-      const data = await res.json();
-      setQuote(data);
-    } catch (error) {
-      setQuoteError("Could not load today's quote.");
+    fetchQuote();
+  }, []); useEffect(() => {
+    async function fetchQuote() {
+      try {
+        const res = await fetch("/api/quote");
+        const data = await res.json();
+        setQuote(data);
+      } catch (error) {
+        setQuoteError("Could not load today's quote.");
+      }
     }
-  }
 
-  fetchQuote();
-}, []);
+    fetchQuote();
+  }, []);
 
 
 
@@ -178,10 +178,10 @@ useEffect(() => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-   useEffect(()=>{
-    const text= new SplitType(".gradient-title")
-    let t1=gsap.timeline()
-    t1.from(".char",{ 
+  useEffect(() => {
+    const text = new SplitType(".gradient-title")
+    let t1 = gsap.timeline()
+    t1.from(".char", {
       y: 50,
       opacity: 0,
       duration: 0.5,
@@ -189,12 +189,12 @@ useEffect(() => {
       ease: "power2.out",
     })
     t1.from("#hero-description", {
-      scale:0,
+      scale: 0,
       opacity: 0,
-      duration: 0.5,    
+      duration: 0.5,
       ease: "power2.out",
     })
-  },[])
+  }, [])
 
 
   // Decorative elements for visual flair
@@ -241,16 +241,16 @@ useEffect(() => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1.2, delay: 0.2 }}
               >
-                Welcome to EdgeCareer
+                The AI Career Coach That Gets You Hired
               </motion.span>
               <br />
               <motion.span
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
-                className="inline-block"
+                className="inline-block text-2xl md:text-3xl text-muted-foreground mt-4"
               >
-                Your AI-Powered Career Assistant
+                Stop Applying into the Void.
               </motion.span>
             </h1>
           </SequenceItem>
@@ -258,29 +258,11 @@ useEffect(() => {
           <SequenceItem animation="scale" delay={0.8}>
             <div className="relative">
               <ShinyText
-                text="AI-powered career assistant for smarter job search, resume
-                optimization, mock interviews, and industry insights."
+                text="Stop Applying into the Void. Get interview-ready with AI-powered resume reviews and real-time mock interviews."
                 speed={3}
-                className="mx-auto max-w-[600px] md:text-xl relative z-10 text-muted-foreground"
+                className="mx-auto max-w-[700px] md:text-lg relative z-10 text-muted-foreground"
               />
-              {quote && (
-                <motion.div
-                  className="mt-6 text-center"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.2, duration: 0.6 }}
-                >
-                  <div className="text-sm font-semibold text-primary flex justify-center items-center gap-2 mb-1">
-                    <Sparkles className="w-4 h-4" />
-                    Quote of the Day
-                  </div>
 
-                  <p className="text-sm italic text-muted-foreground leading-relaxed">
-                    "{quote.q}" — <span className="font-medium">Amit Kumar, Founder of TechieHelp</span>
-                  </p>
-                      
-                </motion.div>
-              )}
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent blur-sm -z-10"
                 initial={{ x: -300, opacity: 0 }}
@@ -316,7 +298,7 @@ useEffect(() => {
                   className="px-8 relative overflow-hidden group"
                 >
                   <motion.span className="relative z-10 flex items-center gap-2">
-                    {BUTTONS_MENUS.GET_STARTED}
+                    Start Free Trial
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </motion.span>
                   <motion.span
@@ -341,15 +323,28 @@ useEffect(() => {
                   className="px-6 py-4 border-2 border-gray-400 hover:border-gray-200 transition-all duration-300 hover:text-gray-200 hover:bg-gray-900 relative overflow-hidden"
                 >
                   <motion.span className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 opacity-0 hover:opacity-100 transition-opacity duration-500" />
-                  <ShinyText
-                    text="Interview Prep"
-                    speed={2}
-                    className="text-lg font-semibold px-1 relative z-10"
-                  />
+                  <span className="text-lg font-semibold px-1 relative z-10">Watch Demo</span>
                 </Button>
               </Link>
             </motion.div>
           </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2, duration: 0.5 }}
+            className="flex items-center justify-center gap-2 text-sm text-muted-foreground mt-8"
+          >
+            <div className="flex -space-x-2">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="w-6 h-6 rounded-full bg-gray-300 border-2 border-background overflow-hidden">
+                  <img src={`https://randomuser.me/api/portraits/men/${20 + i}.jpg`} alt="User" className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+            <span>Used by 10,000+ job seekers</span>
+          </motion.div>
+
         </SequenceItem>
 
         <SequenceItem animation="slideUp" delay={1.3}>
@@ -433,11 +428,9 @@ useEffect(() => {
                 className="absolute inset-0 rounded-lg"
                 style={{
                   background: isHovered
-                    ? `radial-gradient(circle at ${
-                        (mousePosition.x + 0.5) * 100
-                      }% ${
-                        (mousePosition.y + 0.5) * 100
-                      }%, rgba(124, 58, 237, 0.3) 0%, rgba(0, 0, 0, 0) 70%)`
+                    ? `radial-gradient(circle at ${(mousePosition.x + 0.5) * 100
+                    }% ${(mousePosition.y + 0.5) * 100
+                    }%, rgba(124, 58, 237, 0.3) 0%, rgba(0, 0, 0, 0) 70%)`
                     : "none",
                   opacity: isHovered ? 1 : 0,
                 }}
@@ -476,7 +469,7 @@ useEffect(() => {
             >
               <div className="flex items-center gap-2">
                 <Sparkles className="text-primary h-5 w-5" />
-                <span className="text-sm font-medium">AI-powered insights</span>
+                <span className="text-sm font-medium">ATS Score: 92/100</span>
               </div>
             </motion.div>
 
@@ -493,7 +486,7 @@ useEffect(() => {
             >
               <div className="flex items-center gap-2">
                 <Star className="text-yellow-500 h-5 w-5" />
-                <span className="text-sm font-medium">95% Success Rate</span>
+                <span className="text-sm font-medium">3 Interviews Landed</span>
               </div>
             </motion.div>
 

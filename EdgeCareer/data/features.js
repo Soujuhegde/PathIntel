@@ -1,67 +1,35 @@
-import { 
-  BrainCircuit, 
-  Briefcase, 
-  LineChart, 
-  ScrollText, 
-  FileText, 
-  ShieldCheck, 
-  Edit3, 
-  Mic, 
-  BarChart3, 
-  Upload, 
-  Users, 
-  BriefcaseBusiness 
+import {
+  FileText,
+  Mic,
+  BriefcaseBusiness,
+  ShieldCheck
 } from "lucide-react";
 
 export const features = [
   {
-    icon: <BrainCircuit className="w-6 h-6 mb-4 text-gray-400" />,
-    title: "AI-Powered Guidance",
-    description:
-      "Discover career paths tailored to your skills with AI-driven insights.",
-  },
-  {
-    icon: <ScrollText className="w-6 h-6 mb-4 text-gray-400" />,
-    title: "Smart Resume & Letter",
-    description: "Create ATS-optimized resumes and cover letters effortlessly.",
-    button: { text: "Build Your Resume", link: "/resume-builder" },
-  },
-  {
     icon: <ShieldCheck className="w-6 h-6 mb-4 text-gray-400" />,
-    title: "Check Your ATS Score",
-    description: "Upload your resume and get feedback to improve your chances.",
-    button: { text: "Check ATS Score", link: "/ats-checker" },
+    title: "Resume Scanner (AI vs. ATS)",
+    description: "Our AI compares your resume against real job descriptions to identify missing keywords and formatting errors that get you rejected.",
+    button: { text: "Scan My Resume", link: "/ats-checker" },
   },
-  {
-    icon: <Upload className="w-6 h-6 mb-4 text-gray-400" />,
-    title: "Get Course Recommendations",
-    description: "AI suggests the best courses to enhance your skills.",
-    button: { text: "Find Best Courses", link: "/course-recommendations" },
-  },  
   {
     icon: <Mic className="w-6 h-6 mb-4 text-gray-400" />,
-    title: "Mock Interviews",
-    description: "Get AI-driven interview feedback to enhance your skills.",
-    button: { text: "Practice Now", link: "/mock-interview" },
+    title: "AI Mock Interviewer",
+    description: "Practice answering behavioral and technical questions. The AI listens to your audio and gives feedback on tone, clarity, and content.",
+    button: { text: "Start Practice", link: "/mock-interview" },
   },
   {
-    icon: <BarChart3 className="w-6 h-6 mb-4 text-gray-400" />,
-    title: "Know Industry Trends",
-    description: "Stay updated with salary insights and latest job trends.",
-    button: { text: "Explore Insights", link: "/industry-insights" },
+    icon: <FileText className="w-6 h-6 mb-4 text-gray-400" />,
+    title: "Automated Cover Letters",
+    description: "Generate a tailored cover letter in seconds. The AI analyzes the job description and your resume to write a compelling pitch.",
+    button: { text: "Generate Letter", link: "/resume-builder" },
   },
   {
-    icon: <Upload className="w-6 h-6 mb-4 text-gray-400" />,
-    title: "Get Job Matches",
-    description: "AI recommends the best job opportunities for you.",
-    button: { text: "Find Jobs", link: "/latest-jobs" },
-  },
-  {
-    icon: <Users className="w-6 h-6 mb-4 text-gray-400" />,
-    title: "Shortlist Top Talent",
-    description: "AI-powered tools for recruiters to filter resumes efficiently.",
-    button: { text: "For Recruiters", link: "/recruiter-tools" },
+    icon: <BriefcaseBusiness className="w-6 h-6 mb-4 text-gray-400" />,
+    title: "Career Gap Analysis",
+    description: "Identify exactly what skills or experiences you are missing for your target role and get actionable advice on how to bridge the gap.",
+    button: { text: "View Gap Analysis", link: "/industry-insights" },
   },
 ];
 
-export default features;  
+export default features;

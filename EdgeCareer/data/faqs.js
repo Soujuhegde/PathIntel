@@ -1,46 +1,26 @@
 export const faqs = [
   {
-    "question": "What makes EdgeCareer unique as a career development tool?",
-    "answer": "EdgeCareer leverages advanced AI technology to provide personalized career guidance. Our platform offers three core features: an AI-powered resume builder, a cover letter generator, and an intelligent interview coach. Each tool is designed to help you craft compelling applications and prepare for job interviews with confidence."
+    "question": "What is the difference between PathIntel and ChatGPT?",
+    "answer": "While ChatGPT needs complex prompts to give generic advice, PathIntel is a dedicated career coach. We use specialized AI models trained on millions of successful resumes and interview transcripts to give you precise, actionable, and industry-specific feedback that actually beats Applicant Tracking Systems (ATS)."
   },
   {
-    "question": "How does EdgeCareer generate tailored career content?",
-    "answer": "During onboarding, EdgeCareer gathers insights about your industry, experience, and skills. Our AI then uses this data to create customized resumes, cover letters, and interview questions. The content is aligned with industry standards, ensuring high relevance and effectiveness."
+    "question": "Will my data be kept private?",
+    "answer": "Yes, 100%. Your resume and personal data are encrypted and used ONLY to generate your feedback. We do not sell your data to recruiters or third parties. We use Clerk for secure authentication and follow strict data privacy protocols."
   },
   {
-    "question": "How accurate and up-to-date are EdgeCareer’s industry insights?",
-    "answer": "We continuously update our industry insights using AI-driven market analysis. This includes real-time salary trends, in-demand skills, and emerging job opportunities. With regular updates, you always have access to the most relevant career data."
+    "question": "Can I use PathIntel for free?",
+    "answer": "Yes! You can start with our Free Plan to get a basic resume score and try out the mock interview features. If you need unlimited resume scans, detailed line-by-line analysis, and advanced interview practice, you can upgrade to PathIntel Pro."
   },
   {
-    "question": "Is my data secure with EdgeCareer?",
-    "answer": "Absolutely. We prioritize data privacy and security by implementing end-to-end encryption, secure authentication with Clerk, and strict data protection policies. Your personal information remains private and is never shared with third parties."
+    "question": "How does the 'Resume Scan' work?",
+    "answer": "Our AI analyzes your resume against a specific job description you provide. It checks for keyword matching, formatting issues, and 'ATS readability' to ensure your application gets past the bots and into the hands of a human recruiter."
   },
   {
-    "question": "How can I track my interview preparation progress?",
-    "answer": "EdgeCareer provides detailed analytics to help you monitor your improvement. You can track your performance across multiple mock interviews, receive AI-driven feedback, and get personalized suggestions to refine your responses and boost confidence."
+    "question": "What kind of interview questions can I practice?",
+    "answer": "PathIntel covers behavioral, technical, and situational questions. You can practice 'Tell me about yourself', 'What are your weaknesses', or specific technical questions for roles like Software Engineering, Product Management, Marketing, and more."
   },
   {
-    "question": "Can I edit the AI-generated content?",
-    "answer": "Yes! While EdgeCareer provides a strong foundation, you have full control over customization. Our built-in markdown editor allows you to fine-tune resumes, cover letters, and interview answers to perfectly match your career goals."
-  },
-  {
-    "question": "Does EdgeCareer support different job industries?",
-    "answer": "Yes! EdgeCareer supports a wide range of industries, including tech, finance, healthcare, marketing, engineering, and many more. Our AI adapts to industry-specific requirements to ensure optimal results."
-  },
-  {
-    "question": "Can I use EdgeCareer to apply for jobs directly?",
-    "answer": "EdgeCareer helps you create job-winning resumes and cover letters, but we also provide direct job application links and AI-recommended job postings based on your profile."
-  },
-  {
-    "question": "Does EdgeCareer provide career mentorship?",
-    "answer": "Yes! We offer AI-driven career guidance as well as access to expert career coaches who can provide personalized mentoring sessions based on your goals."
-  },
-  {
-    "question": "Is EdgeCareer free to use?",
-    "answer": "EdgeCareer offers both free and premium plans. The free plan provides access to basic resume building and AI recommendations, while the premium plan unlocks advanced features like AI-driven interview coaching, detailed career insights, and unlimited resume templates."
-  },
-  {
-    "question": "How does EdgeCareer improve my chances of getting hired?",
-    "answer": "EdgeCareer enhances your job application process with AI-optimized resumes, cover letters, and interview coaching. We also analyze job market trends to ensure your skills and documents match top recruiter expectations."
+    "question": "Do you help with career switchers?",
+    "answer": "Absolutely. Our 'Career Gap Analysis' feature specifically helps identifying transferable skills and suggesting what you need to learn to move from your current role to your dream job."
   }
 ];
