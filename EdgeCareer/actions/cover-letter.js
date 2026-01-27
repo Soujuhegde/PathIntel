@@ -5,7 +5,6 @@ import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export async function generateCoverLetter(data) {
   const { userId } = await auth();
@@ -18,8 +17,7 @@ export async function generateCoverLetter(data) {
   if (!user) throw new Error("User not found");
 
   const prompt = `
-    Write a ${data.tone || "professional"} cover letter for a ${data.jobTitle} position at ${
-      data.companyName
+    Write a ${data.tone || "professional"} cover letter for a ${data.jobTitle} position at ${data.companyName
     }.
 
     Candidate Name: ${data.fullName || "The applicant"}
@@ -39,8 +37,39 @@ export async function generateCoverLetter(data) {
     `;
 
 
+  // Try multiple models in sequence to handle 429 and 404 errors
+  const modelsToTry = [
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-lite",
+    "gemini-2.5-flash-lite",
+    "gemini-2.5-pro"
+  ];
+
+  let result = null;
+  let lastError = null;
+
+  for (const modelName of modelsToTry) {
+    try {
+      const model = genAI.getGenerativeModel({ model: modelName });
+      result = await model.generateContent(prompt);
+      if (result) break;
+    } catch (err) {
+      console.error(`DEBUG: Fallback - Model ${modelName} failed:`, err.message);
+      lastError = err;
+      // Continue if it's a model-not-found (404) or rate-limit (429)
+      if (err.message.includes("404") || err.message.includes("429")) {
+        continue;
+      }
+      throw err; // Other errors should probably stop the loop
+    }
+  }
+
+  if (!result) {
+    throw new Error(`Failed to generate cover letter after trying multiple models: ${lastError?.message}`);
+  }
+
   try {
-    const result = await model.generateContent(prompt);
     const content = result.response.text().trim();
 
     const coverLetter = await db.coverLetter.create({
@@ -56,8 +85,8 @@ export async function generateCoverLetter(data) {
 
     return coverLetter;
   } catch (error) {
-    console.error("Error generating cover letter:", error.message);
-    throw new Error("Failed to generate cover letter");
+    console.error("Error generating/saving cover letter:", error.message);
+    throw new Error("Failed to generate cover letter: " + error.message);
   }
 }
 

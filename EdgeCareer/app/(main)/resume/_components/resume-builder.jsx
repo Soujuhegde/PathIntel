@@ -448,7 +448,8 @@ import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/nextjs";
 import { entriesToMarkdown } from "@/app/lib/helper";
 import { resumeSchema } from "@/app/lib/schema";
-import html2pdf from "html2pdf.js/dist/html2pdf.min.js";
+// import html2pdf from "html2pdf.js"; // This causes SSR issues
+
 
 export default function ResumeBuilder({ initialContent }) {
   const [activeTab, setActiveTab] = useState("edit");
@@ -508,15 +509,14 @@ export default function ResumeBuilder({ initialContent }) {
   const getContactMarkdown = () => {
     const { contactInfo } = formValues;
     const parts = [];
-    if (contactInfo.email) parts.push(`📧 ${contactInfo.email}`);
-    if (contactInfo.mobile) parts.push(`📱 ${contactInfo.mobile}`);
+    if (contactInfo.email) parts.push(contactInfo.email);
+    if (contactInfo.mobile) parts.push(contactInfo.mobile);
     if (contactInfo.linkedin)
-      parts.push(`💼 [LinkedIn](${contactInfo.linkedin})`);
-    if (contactInfo.twitter) parts.push(`🐦 [Twitter](${contactInfo.twitter})`);
+      parts.push(`[LinkedIn](${contactInfo.linkedin})`);
+    if (contactInfo.twitter) parts.push(`[Twitter](${contactInfo.twitter})`);
 
     return parts.length > 0
-      ? `## <div align="center">${user.fullName}</div>
-        \n\n<div align="center">\n\n${parts.join(" | ")}\n\n</div>`
+      ? `# ${user.fullName}\n\n<div align="center">\n\n${parts.join(" | ")}\n\n</div>`
       : "";
   };
 
@@ -537,6 +537,7 @@ export default function ResumeBuilder({ initialContent }) {
   const generatePDF = async () => {
     setIsGenerating(true);
     try {
+      const html2pdf = (await import("html2pdf.js")).default;
       const element = document.getElementById("resume-pdf");
       const opt = {
         margin: [15, 15],
@@ -816,6 +817,42 @@ export default function ResumeBuilder({ initialContent }) {
                       </p>
                     )}
                   </div>
+
+                  <div className="flex justify-end gap-2 pt-4 border-t">
+                    <Button
+                      variant="destructive"
+                      onClick={handleSubmit(onSubmit)}
+                      disabled={isSaving || isProcessing}
+                    >
+                      {isSaving || isProcessing ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          {isProcessing ? "Processing..." : "Saving..."}
+                        </>
+                      ) : (
+                        <>
+                          <Save className="h-4 w-4 mr-2" />
+                          Save Content
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      onClick={generatePDF}
+                      disabled={isGenerating || isProcessing}
+                    >
+                      {isGenerating ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Generating PDF...
+                        </>
+                      ) : (
+                        <>
+                          <Download className="h-4 w-4 mr-2" />
+                          Download PDF
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </fieldset>
               </form>
             </TabsContent>
@@ -861,8 +898,68 @@ export default function ResumeBuilder({ initialContent }) {
                   preview={resumeMode}
                 />
               </div>
-              <div className="hidden">
-                <div id="resume-pdf">
+              <div
+                style={{
+                  position: "absolute",
+                  left: "-9999px",
+                  top: "0",
+                  width: "210mm", // Standard A4 width
+                }}
+              >
+                <div id="resume-pdf" className="resume-pdf">
+                  <style>
+                    {`
+                      .resume-pdf {
+                        font-family: 'Times New Roman', Times, serif;
+                        line-height: 1.5;
+                        color: black;
+                        padding: 40px;
+                        background: white;
+                      }
+                      .resume-pdf h1 {
+                        text-align: center;
+                        font-size: 28px;
+                        font-weight: bold;
+                        margin-bottom: 10px;
+                        color: black;
+                      }
+                      .resume-pdf h2 {
+                        font-size: 18px;
+                        font-weight: bold;
+                        border-bottom: 1px solid #000;
+                        margin-top: 20px;
+                        margin-bottom: 10px;
+                        text-transform: uppercase;
+                        color: black;
+                        display: block;
+                        width: 100%;
+                      }
+                      .resume-pdf h3 {
+                        font-size: 16px;
+                        font-weight: bold;
+                        margin-top: 12px;
+                        margin-bottom: 4px;
+                        color: black;
+                      }
+                      .resume-pdf p, .resume-pdf li {
+                        font-size: 13px;
+                        margin-bottom: 6px;
+                        color: black;
+                      }
+                      .resume-pdf ul {
+                        margin-left: 20px;
+                        list-style-type: disc;
+                      }
+                      .resume-pdf a {
+                        color: black;
+                        text-decoration: underline;
+                      }
+                      .resume-pdf div[align="center"] {
+                        text-align: center;
+                        margin-bottom: 20px;
+                      }
+                    `}
+                  </style>
                   <MDEditor.Markdown
                     source={previewContent}
                     style={{

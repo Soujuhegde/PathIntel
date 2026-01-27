@@ -5,7 +5,6 @@ import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export const generateAIInsights = async (industry) => {
   const prompt = `
@@ -28,7 +27,37 @@ export const generateAIInsights = async (industry) => {
           Include at least 5 skills and trends.
         `;
 
-  const result = await model.generateContent(prompt);
+  // Try multiple models in sequence to handle 429 and 404 errors
+  const modelsToTry = [
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-lite",
+    "gemini-2.5-flash-lite",
+    "gemini-2.5-pro"
+  ];
+
+  let result = null;
+  let lastError = null;
+
+  for (const modelName of modelsToTry) {
+    try {
+      const model = genAI.getGenerativeModel({ model: modelName });
+      result = await model.generateContent(prompt);
+      if (result) break;
+    } catch (err) {
+      console.error(`DEBUG: Fallback - Model ${modelName} failed:`, err.message);
+      lastError = err;
+      if (err.message.includes("404") || err.message.includes("429")) {
+        continue;
+      }
+      throw err;
+    }
+  }
+
+  if (!result) {
+    throw new Error(`Failed after trying multiple models: ${lastError?.message}`);
+  }
+
   const response = result.response;
   const text = response.text();
 
@@ -43,7 +72,7 @@ export const generateAIInsights = async (industry) => {
     return JSON.parse(cleanedText);
   } catch (error) {
     console.error("JSON parsing error:", error);
-    throw new Error("Failed to parse AI insights");
+    throw new Error("Failed to parse AI insights: " + error.message);
   }
 };
 

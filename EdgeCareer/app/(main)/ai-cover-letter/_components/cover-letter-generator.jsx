@@ -113,10 +113,10 @@ export default function CoverLetterGenerator() {
                 {generating ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Generating...
+                    Creating...
                   </>
                 ) : (
-                  "Generate Cover Letter"
+                  "Create Cover Letter"
                 )}
               </Button>
             </div>

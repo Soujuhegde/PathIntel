@@ -6,7 +6,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { revalidatePath } from "next/cache";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export async function saveResume(content) {
   const { userId } = await auth();
@@ -86,13 +85,43 @@ export async function improveWithAI({ current, type }) {
     Format the response as a single paragraph without any additional text or explanations.
   `;
 
+  // Try multiple models in sequence to handle 429 and 404 errors
+  const modelsToTry = [
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-lite",
+    "gemini-2.5-flash-lite",
+    "gemini-2.5-pro"
+  ];
+
+  let result = null;
+  let lastError = null;
+
+  for (const modelName of modelsToTry) {
+    try {
+      const model = genAI.getGenerativeModel({ model: modelName });
+      result = await model.generateContent(prompt);
+      if (result) break;
+    } catch (err) {
+      console.error(`DEBUG: Fallback - Model ${modelName} failed:`, err.message);
+      lastError = err;
+      if (err.message.includes("404") || err.message.includes("429")) {
+        continue;
+      }
+      throw err;
+    }
+  }
+
+  if (!result) {
+    throw new Error(`Failed after trying multiple models: ${lastError?.message}`);
+  }
+
   try {
-    const result = await model.generateContent(prompt);
     const response = result.response;
     const improvedContent = response.text().trim();
     return improvedContent;
   } catch (error) {
     console.error("Error improving content:", error);
-    throw new Error("Failed to improve content");
+    throw new Error("Failed to improve content: " + error.message);
   }
 }

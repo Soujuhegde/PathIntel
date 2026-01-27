@@ -5,7 +5,6 @@ import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export async function generateQuiz() {
   const { userId } = await auth();
@@ -22,11 +21,9 @@ export async function generateQuiz() {
   if (!user) throw new Error("User not found");
 
   const prompt = `
-    Generate 10 technical interview questions for a ${
-      user.industry
-    } professional${
-    user.skills?.length ? ` with expertise in ${user.skills.join(", ")}` : ""
-  }.
+    Generate 10 technical interview questions for a ${user.industry
+    } professional${user.skills?.length ? ` with expertise in ${user.skills.join(", ")}` : ""
+    }.
     
     Each question should be multiple choice with 4 options.
     
@@ -43,8 +40,38 @@ export async function generateQuiz() {
     }
   `;
 
+  // Try multiple models in sequence to handle 429 and 404 errors
+  const modelsToTry = [
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-lite",
+    "gemini-2.5-flash-lite",
+    "gemini-2.5-pro"
+  ];
+
+  let result = null;
+  let lastError = null;
+
+  for (const modelName of modelsToTry) {
+    try {
+      const model = genAI.getGenerativeModel({ model: modelName });
+      result = await model.generateContent(prompt);
+      if (result) break;
+    } catch (err) {
+      console.error(`DEBUG: Fallback - Model ${modelName} failed:`, err.message);
+      lastError = err;
+      if (err.message.includes("404") || err.message.includes("429")) {
+        continue;
+      }
+      throw err;
+    }
+  }
+
+  if (!result) {
+    throw new Error(`Failed to generate quiz after trying multiple models: ${lastError?.message}`);
+  }
+
   try {
-    const result = await model.generateContent(prompt);
     const response = result.response;
     const text = response.text();
     const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
@@ -53,7 +80,7 @@ export async function generateQuiz() {
     return quiz.questions;
   } catch (error) {
     console.error("Error generating quiz:", error);
-    throw new Error("Failed to generate quiz questions");
+    throw new Error("Failed to generate quiz questions: " + error.message);
   }
 }
 
